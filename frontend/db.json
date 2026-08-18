@@ -1,0 +1,25 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "Learn AWS Lambda",
+      "completed": false
+    },
+    {
+      "id": "2",
+      "title": "Deploy SAM app",
+      "completed": true
+    },
+    {
+      "title": "aws",
+      "completed": false,
+      "id": "JyBRne82qcE"
+    },
+    {
+      "title": "me and you",
+      "completed": false,
+      "id": "RPUbUfZt30o"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

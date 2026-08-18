@@ -74,15 +74,6 @@ resource "aws_lambda_permission" "api_gw" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda_api.execution_arn}/*/*"
 }
-resource "aws_apigatewayv2_api" "lambda_api" {
-  name          = "serverless-api"
-  protocol_type = "HTTP"
-  cors_configuration {
-    allow_origins = ["*"]
-    allow_methods = ["GET"]
-    allow_headers = ["*"]
-  }
-}
 output "api_endpoint" {
-  value = "${aws_apigatewayv2_api.lambda_api.api_endpoint}/hello"
+  value = aws_apigatewayv2_api.lambda_api.api_endpoint
 }
