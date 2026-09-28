@@ -1,62 +1,34 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
 
-const API = "http://localhost:8000";
-
-export default function App() {
+function App() {
   const [todos, setTodos] = useState([]);
-  const [text, setText] = useState("");
+  const [todoText, setTodoText] = useState('');
 
-  const load = async () => {
-    const res = await axios.get(`${API}/todos`);
-    setTodos(res.data);
+  const addTodo = () => {
+    if (!todoText.trim()) return;
+    const newTodo = { id: Date.now(), text: todoText };
+    setTodos([...todos, newTodo]);
+    setTodoText("");
   };
-
-  const add = async () => {
-    if (!text) return;
-    await axios.post(`${API}/todos`, { title: text });
-    setText("");
-    load();
-  };
-
-  const remove = async (id) => {
-    await axios.delete(`${API}/todos/${id}`);
-    load();
-  };
-
-  useEffect(() => { load(); }, []);
 
   return (
-    <div style={{ padding: 20, fontFamily: 'sans-serif' }}>
-      <h1>Todo App - FastAPI + React + Docker</h1>
+    <div style={{padding: 20, fontFamily: 'Arial'}}>
+      <h1>Todo List</h1>
       <input 
-        value={text} 
-        onChange={e => setText(e.target.value)} 
-        placeholder="Add new todo"
+        value={todoText}
+        onChange={event => setTodoText(event.target.value)}
+        placeholder="Enter a todo"
+        onKeyDown={e => e.key === 'Enter' && addTodo()}
       />
-      <button onClick={add}>Add</button>
+      <button onClick={addTodo}>Add</button>
       
       <ul>
-        {todos.map(t => (
-          
-             <li key={t.id} style={{ marginTop: 10, textDecoration: t.completed ? 'line-through' : 'none' }}>
-            {t.title} - {t.completed ? "Done" : "Pending"}
-            <button onClick={() => toggle(t.id, t.completed)} style={{ marginLeft: 10 }}>
-              {t.completed ? "Undo" : "Done"}
-            </button>
-            <button 
-              onClick={() => remove(t.id)} 
-              style={{ marginLeft: 10, background: 'red', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
-            >
-              Delete
-            </button>
-          </li>
+        {todos.map((todo) => (
+          <li key={todo.id}>{todo.text}</li>
         ))}
       </ul>
     </div>
   );
 }
-const toggle = async (id, completed) => {
-    await axios.put(`${API}/todos/${id}`, { completed: !completed });
-    load();
-  };
+
+export default App;
